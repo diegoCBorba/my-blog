@@ -158,7 +158,7 @@ export const Navbar = () => {
                 <ListItemIcon sx={{ color: lightBlue[800] }}>
                   <ArrowRight size={20} />
                 </ListItemIcon>
-                Tutorials
+                Galeria
               </MenuItem>
               <Divider/>
               <MenuItem onClick={handleCloseMenu}>
@@ -167,12 +167,14 @@ export const Navbar = () => {
                 </ListItemIcon>
                 Contato
               </MenuItem>
-              <MenuItem onClick={handleCloseMenu}>
-                <ListItemIcon>
-                  <BriefcaseBusiness size={20} />
-                </ListItemIcon>
-                Portfólio
-              </MenuItem>
+              <a href="https://diegocardoso.vercel.app/" target='_blank'>
+                <MenuItem onClick={handleCloseMenu}>
+                    <ListItemIcon>
+                      <BriefcaseBusiness size={20} />
+                    </ListItemIcon>
+                    Portfólio
+                </MenuItem>
+              </a>
             </Menu>
           </div>
         </Box>

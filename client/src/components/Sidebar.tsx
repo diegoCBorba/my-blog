@@ -2,11 +2,17 @@
 
 import ListSubheader from '@mui/material/ListSubheader';
 import List from '@mui/material/List';
-import { Box } from '@mui/material';
+import { Box, useMediaQuery, Theme } from '@mui/material';
 import { dataLinks } from '@/utils/data';
 import { ListItemLinks } from './ListItemLinks';
 
 export const Sidebar = () => {
+  const isXlOrAbove = useMediaQuery('(min-width:1200px)');
+
+  if (!isXlOrAbove) {
+    return null;
+  }
+
   return (
     <Box sx={{ width: '100%', maxWidth: 290, pr: "1rem" }}>
       <List

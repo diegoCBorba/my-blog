@@ -18,7 +18,7 @@ export const Footer = () => {
   };
 
   return (
-    <Box component="footer" sx={{ py: 6, mt: 4, maxWidth: "1680px", margin: "auto" }}>
+    <Box component="footer" sx={{ py: 6, mt: 4, maxWidth: "1680px", margin: "auto", position: "relative", bottom: "0", px: "1rem"}}>
       <Box sx={{ mb: 4, maxWidth: "400px"}}>
         <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
           Inscreva-se para receber nossos blogs

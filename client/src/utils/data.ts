@@ -10,6 +10,14 @@ export interface PropsDataLink {
 
 export const dataLinks: PropsDataLink[] = [
   {
+    tag: "Iniciando",
+    blogs: [
+      { title: "Home", src: "/" },
+      { title: "Galeria", src: "/galeria" },
+      { title: "Contatos", src: "/contatos" },
+    ]
+  },
+  {
     tag: "JavaScript",
     blogs: [
       { title: "Formulário de Contato", src: "/javascript/formulario-contato" },
