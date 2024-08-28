@@ -14,7 +14,14 @@ export const dataLinks: PropsDataLink[] = [
     blogs: [
       { title: "Home", src: "/" },
       { title: "Galeria", src: "/galeria" },
-      { title: "Contatos", src: "/contatos" },
+    ]
+  },
+  {
+    tag: "Artigos",
+    blogs: [
+      { title: "Contribuindo para OS", src: "/artigos/contribuindo-para-os" },
+      { title: "Importância do Open Source", src: "/artigos/importancia-do-os" },
+      { title: "Iniciando um Projeto", src: "/artigos/iniciando-projeto" }
     ]
   },
   {
@@ -89,12 +96,4 @@ export const dataLinks: PropsDataLink[] = [
       { title: "GraphQL para APIs", src: "/api-development/graphql-para-apis" }
     ]
   },
-  {
-    tag: "Open Source",
-    blogs: [
-      { title: "Contribuindo para OS", src: "/open-source/contribuindo-para-os" },
-      { title: "Importância do Open Source", src: "/open-source/importancia-do-os" },
-      { title: "Iniciando um Projeto", src: "/open-source/iniciando-projeto" }
-    ]
-  }
 ];

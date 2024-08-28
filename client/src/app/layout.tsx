@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Open_Sans } from "next/font/google";
-import "./globals.css";
 import { Navbar } from "@/components/Navbar";
-import { Divider, ThemeProvider } from "@mui/material";
+import { CssBaseline, Divider, ThemeProvider } from "@mui/material";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import { Sidebar } from "@/components/Sidebar";
 import { Footer } from "@/components/Footer";
+import Provider from "@/utils/Providers";
+import theme from "@/theme";
 
-const open_sans = Open_Sans({ subsets: ["latin"] });
-
-const styleContainer = {}
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,15 +22,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={open_sans.className}>
-        <Navbar/>
-        <div style={{ display: "flex", flexDirection: "row", margin: "auto", maxWidth: "1680px", padding: "4rem 2rem", gap: "1rem" }}>
-          <Sidebar/>
-          {children}
-        </div>
-        <Divider/>
-        <Footer/>
+      <body>
+        <Provider>
+          <AppRouterCacheProvider options={{ enableCssLayer: false }}>
+            <ThemeProvider theme={theme}>
+              <CssBaseline/>
+              <Navbar/>
+              <div style={{ display: "flex", flexDirection: "row", margin: "auto", maxWidth: "1680px", padding: "4rem 2rem", gap: "1rem" }}>
+                <Sidebar/>
+                {children}
+              </div>
+              <Divider/>
+              <Footer/>
+            </ThemeProvider>
+          </AppRouterCacheProvider>
+        </Provider>
       </body>
     </html>
   );
 }
+

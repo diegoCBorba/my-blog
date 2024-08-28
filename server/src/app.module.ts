@@ -1,10 +1,20 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+import { UserModule } from './modules/user/user.module';
+import { TagModule } from './modules/tag/tag.module';
+import { CommentModule } from './modules/comment/comment.module';
+import { BlogModule } from './modules/blog/blog.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot(),
+    UserModule,
+    BlogModule,
+    CommentModule,
+    TagModule,
+    PrismaModule,
+  ],
+  controllers: [],
 })
 export class AppModule {}

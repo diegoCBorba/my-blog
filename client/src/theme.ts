@@ -1,32 +1,39 @@
+'use client';
+import { Open_Sans } from 'next/font/google';
 import { createTheme } from '@mui/material/styles';
 
-export const theme = createTheme({
+const open_sans = Open_Sans({ subsets: ["latin"] });
+
+const theme = createTheme({
   palette: {
+    mode: 'light',
     primary: {
-      main: '#4caf50', // Cor primária principal
+      main: '#47413A',
     },
     secondary: {
-      main: '#ff5722', // Cor secundária principal
-    },
-    success: {
-      main: '#4caf50', // Cor para sucesso
+      main: '#D0BEA9',
     },
     error: {
-      main: '#f44336', // Cor para erros
-    },
-    warning: {
-      main: '#ff9800', // Cor para avisos
-    },
-    info: {
-      main: '#2196f3', // Cor para informações
+      main: '#C79B65',
     },
     background: {
-      default: '#f5f5f5', // Cor de fundo padrão
+      default: '#efefef',
     },
-    text: {
-      primary: '#333', // Cor do texto principal
-      secondary: '#666', // Cor do texto secundário
+  },
+  typography: {
+    fontFamily: open_sans.style.fontFamily,
+  },
+  components: {
+    MuiAlert: {
+      styleOverrides: {
+        root: ({ ownerState }) => ({
+          ...(ownerState.severity === 'info' && {
+            backgroundColor: '#efefef',
+          }),
+        }),
+      },
     },
   },
 });
-  
+
+export default theme;

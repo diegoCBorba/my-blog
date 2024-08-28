@@ -2,15 +2,30 @@
 
 import ListSubheader from '@mui/material/ListSubheader';
 import List from '@mui/material/List';
-import { Box, useMediaQuery, Theme } from '@mui/material';
-import { dataLinks } from '@/utils/data';
+import { Box, useMediaQuery, Skeleton } from '@mui/material';
 import { ListItemLinks } from './ListItemLinks';
+import { useGroupedBlogs } from '@/hooks/blog/useGroupedBlogs';
 
 export const Sidebar = () => {
   const isXlOrAbove = useMediaQuery('(min-width:1200px)');
+  const { data, isLoading, error } = useGroupedBlogs();
 
   if (!isXlOrAbove) {
     return null;
+  }
+
+  if (isLoading) {
+    return (
+      <Box sx={{ maxWidth: 290 }}>
+        <Skeleton variant="rectangular" width="290px" height={30} sx={{ mb: 1 }} />
+        <Skeleton variant="rectangular" height={30} sx={{ ml: 4, mb: 1 }} />
+        <Skeleton variant="rectangular" height={30} sx={{ ml: 4, mb: 1 }} />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return <div>Error loading blogs</div>;
   }
 
   return (
@@ -28,17 +43,15 @@ export const Sidebar = () => {
           <ListSubheader 
             component="div" 
             id="nested-list-subheader" 
-            sx={{ bgcolor: "transparent", position: "initial"}}
+            sx={{ bgcolor: "transparent", position: "initial" }}
           >
             Blog&apos;s disponíveis
           </ListSubheader>
         }
       >
-        {
-          dataLinks.map((link, index) => (
-            <ListItemLinks key={index} dataLink={link}/>
-          ))
-        }
+        {data?.map((link, index) => (
+          <ListItemLinks key={index} dataLink={link} />
+        ))}
       </List> 
     </Box>
   );

@@ -1,12 +1,11 @@
-import { PropsDataLink } from "@/utils/data";
+import { PropsGroupedBlogs } from "@/interfaces/blog";
 import { Box, Collapse, List, ListItemButton, ListItemText } from "@mui/material"
-import { lightBlue } from "@mui/material/colors";
 import { ChevronDown, ChevronUp } from "lucide-react"
 import Link from "next/link";
 import { useState } from "react";
 
 interface PropsList{
-  dataLink: PropsDataLink
+  dataLink: PropsGroupedBlogs
 }
 
 export const ListItemLinks = ({ dataLink }: PropsList) => {
@@ -28,7 +27,7 @@ export const ListItemLinks = ({ dataLink }: PropsList) => {
       <List component="div" disablePadding>
         {
           dataLink.blogs.map((blogs, index) => (
-            <Link key={index} href={blogs.src}>
+            <Link key={index} href={blogs.slug}>
               <ListItemButton
                 sx={{ pl: 4 }}
                 key={index}

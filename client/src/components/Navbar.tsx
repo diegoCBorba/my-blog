@@ -5,10 +5,17 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { ArrowRight, BriefcaseBusiness, LogOut, Mail, Menu as MenuLucide, Settings } from 'lucide-react';
 import { Avatar, Divider, ListItemIcon, Menu, MenuItem, Tooltip, Typography } from '@mui/material';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { lightBlue } from '@mui/material/colors';
+import { useGroupedBlogs } from '@/hooks/blog/useGroupedBlogs';
 
 export const Navbar = () => {
+  const { data } = useGroupedBlogs()
+
+  useEffect(() => {
+    console.log(data)
+  })
+
   const [anchorElAvatar, setAnchorElAvatar] = useState<HTMLElement | null>(null);
   const openAvatar = Boolean(anchorElAvatar);
 
