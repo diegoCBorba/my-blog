@@ -1,5 +1,6 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { BlogService } from './blog.service';
+import { CreateBlogDto } from './dto/create-blog.dto';
 
 @Controller('blog')
 export class BlogController {
@@ -26,5 +27,15 @@ export class BlogController {
   @Get(':slug')
   async findOne(@Param('slug') slug: string) {
     return this.blogService.findOneBySlug(slug);
+  }
+
+  @Get(':slug/isUnique')
+  async isSlugUnique(@Param('slug') slug: string) {
+    return this.blogService.isSlugUnique(slug);
+  }
+
+  @Post()
+  async create(@Body() createBlogDto: CreateBlogDto) {
+    return this.blogService.create(createBlogDto);
   }
 }

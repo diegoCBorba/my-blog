@@ -27,7 +27,7 @@ export const ListItemLinks = ({ dataLink }: PropsList) => {
       <List component="div" disablePadding>
         {
           dataLink.blogs.map((blogs, index) => (
-            <Link key={index} href={blogs.slug}>
+            <Link key={index} href={`${blogs.slug}`}>
               <ListItemButton
                 sx={{ pl: 4 }}
                 key={index}

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Navbar } from "@/components/Navbar";
 import { CssBaseline, Divider, ThemeProvider } from "@mui/material";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import { Sidebar } from "@/components/Sidebar";
 import { Footer } from "@/components/Footer";

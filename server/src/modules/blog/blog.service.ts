@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateBlogDto } from './dto/create-blog.dto';
 
 @Injectable()
 export class BlogService {
@@ -106,12 +107,34 @@ export class BlogService {
         .map((tag) => ({
           tag: tag.name,
           blogs: tag.blogs.map((blog) => ({
-            slug: `${tag.slug}/${blog.slug}`,
+            slug: `/${tag.slug}/${blog.slug}`,
             title: blog.title,
           })),
         })),
     ];
 
     return result;
+  }
+
+  async create(createBlogDto: CreateBlogDto) {
+    return this.prisma.blog.create({
+      data: {
+        title: createBlogDto.title,
+        cover: createBlogDto.cover,
+        content: createBlogDto.content,
+        description: createBlogDto.description,
+        slug: createBlogDto.slug,
+        tag: { connect: { id: createBlogDto.tagId } },
+        author: { connect: { id: createBlogDto.authorId } },
+      },
+    });
+  }
+
+  async isSlugUnique(slug: string): Promise<{ isUnique: boolean }> {
+    const blog = await this.prisma.blog.findUnique({
+      where: { slug },
+    });
+
+    return { isUnique: !blog };
   }
 }
