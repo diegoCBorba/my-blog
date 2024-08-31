@@ -56,9 +56,8 @@ export class BlogService {
     const blog = await this.prisma.blog.findUnique({
       where: { slug },
       include: {
-        tag: true, // Incluir a tag relacionada para exibir outras informações se necessário
-        author: true, // Se você quiser incluir informações sobre o autor
-        comments: true, // Se você quiser incluir os comentários
+        tag: true,
+        author: true,
       },
     });
 
@@ -67,15 +66,15 @@ export class BlogService {
     }
 
     return {
-      slug: `${blog.tag.slug}/${blog.slug}`, // Formatar o slug como na listagem
+      id: blog.id,
+      slug: `${blog.tag.slug}/${blog.slug}`,
       cover: blog.cover,
       title: blog.title,
       description: blog.description,
-      content: blog.content, // Incluir o conteúdo completo
+      content: blog.content,
       tag: blog.tag.name,
       author: blog.author.name,
       publishedDate: blog.publishedDate,
-      comments: blog.comments, // Opcional: retornar comentários
     };
   }
 

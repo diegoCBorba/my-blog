@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
@@ -29,7 +29,6 @@ const BlogForm = () => {
   });
   const coverImage = watch('coverImage');
   const [slugError, setSlugError] = useState<string | null>(null);
-  const [slug, setSlug] = useState<string | null>(null);
 
   const { data: tags, isLoading: isTagsLoading } = useTags();
   const { mutate: createBlogPost, isPending: isCreating, error: createError } = useMutateBlogPost();
@@ -55,26 +54,9 @@ const BlogForm = () => {
       .replace(/\s+/g, '-');
   };
 
-  const { data: slugCheck, isLoading: isCheckingSlug } = useSlugUnique(slug || '');
-
   const onSubmit = async (data: FormValues) => {
     const newSlug = generateSlug(data.title);
-    setSlug(newSlug);
 
-    // Se o slug ainda está sendo verificado, retorne sem submeter
-    if (isCheckingSlug) {
-      return;
-    }
-
-    // Se o slug não for único, mostre o erro e retorne
-    if (slugCheck && !slugCheck.isUnique) {
-      setSlugError('O slug já existe. Por favor, altere o título.');
-      return;
-    }
-
-    setSlugError(null);
-
-    // Crie o objeto com o slug e os outros dados do formulário
     const formDataWithSlug: CreateBlogPostPayload = {
       ...data,
       cover: data.coverImage ? URL.createObjectURL(data.coverImage) : '',
@@ -82,7 +64,6 @@ const BlogForm = () => {
       authorId: 1, // Substitua por um ID real se necessário
     };
 
-    // Envie os dados para o hook de mutação
     createBlogPost(formDataWithSlug);
   };
 
@@ -146,7 +127,7 @@ const BlogForm = () => {
                       onChange={(e) => field.onChange(Number(e.target.value))}
                     >
                       {isTagsLoading ? (
-                        <MenuItem value={0}>
+                        <MenuItem value={1}>
                           <CircularProgress size={24} />
                         </MenuItem>
                       ) : (

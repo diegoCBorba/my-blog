@@ -38,7 +38,7 @@ const CodeBlock = ({ className, children }: CodeBlockProps) => {
         sx={{
           backgroundColor: '#1e1e1e',
           color: '#858585',
-          padding: '4px 8px',
+          padding: '4px 1rem',
           borderTopLeftRadius: '4px',
           borderTopRightRadius: '4px',
           fontSize: '12px',

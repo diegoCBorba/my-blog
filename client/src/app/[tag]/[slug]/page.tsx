@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { useBlogBySlug } from '@/hooks/blog/useBlogBySlug';
 import InlineCode from '@/components/InlineCode';
 import CodeBlock from '@/components/CodeBlock';
+import CommentList from '@/components/CommentList';
 
 interface Props {
   params: { slug: string };
@@ -80,12 +81,7 @@ const Blogs = ({ params }: Props) => {
       >
         {blog.content}
       </ReactMarkdown>
-      {blog.comments.length > 0 && (
-        <Box sx={{ mt: '2rem' }}>
-          <Typography variant="h6">Comentários:</Typography>
-          {/* Aqui você pode mapear e renderizar os comentários se necessário */}
-        </Box>
-      )}
+      <CommentList idBlog={blog.id}/>
     </Box>
   );
 };

@@ -3,10 +3,12 @@
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
-import { ArrowRight, BriefcaseBusiness, LogOut, Mail, Menu as MenuLucide, Settings } from 'lucide-react';
+import Button from '@mui/material/Button';
+import { ArrowRight, BriefcaseBusiness, LogOut, Mail, Menu as MenuLucide, Plus, Settings } from 'lucide-react';
 import { Avatar, Divider, ListItemIcon, Menu, MenuItem, Tooltip, Typography } from '@mui/material';
 import { MouseEvent, useState } from 'react';
 import { lightBlue } from '@mui/material/colors';
+import { useRouter } from 'next/navigation';
 
 export const Navbar = () => {
   const [anchorElAvatar, setAnchorElAvatar] = useState<HTMLElement | null>(null);
@@ -29,11 +31,28 @@ export const Navbar = () => {
     setAnchorElMenu(null);
   };
 
+  const router = useRouter();
+
+  const handleAddBlog = () => {
+    router.push('/criar-blog');
+  };
+
   return (
     <>
-      <div style={{ height: "58px" }}/>
+      <div style={{ height: "58px" }} />
       <AppBar>
-        <Box sx={{display: "flex", justifyContent: "space-between", flexDirection: "row", px: "1rem", py: "0.5rem", maxWidth: "1680px", width: "100%", margin: "auto"}}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: "row",
+            px: "1rem",
+            py: "0.5rem",
+            maxWidth: "1680px",
+            width: "100%",
+            margin: "auto",
+          }}
+        >
           <div>
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
               <Tooltip title="Account settings">
@@ -44,7 +63,7 @@ export const Navbar = () => {
                   aria-haspopup="true"
                   aria-expanded={openAvatar ? 'true' : undefined}
                 >
-                  <Avatar sx={{ width: 32, height: 32 }}/>
+                  <Avatar sx={{ width: 32, height: 32 }} />
                 </IconButton>
               </Tooltip>
             </Box>
@@ -91,24 +110,27 @@ export const Navbar = () => {
               <Divider />
               <MenuItem onClick={handleCloseAvatar}>
                 <ListItemIcon>
-                  <Settings size={20} />
-                </ListItemIcon>
-                Settings
-              </MenuItem>
-              <MenuItem onClick={handleCloseAvatar}>
-                <ListItemIcon>
                   <LogOut size={20} />
                 </ListItemIcon>
                 Logout
               </MenuItem>
             </Menu>
-
           </div>
           <div>
-            <IconButton 
-              edge="start" 
-              color="inherit" 
-              aria-label="menu" 
+            <Button
+              variant="contained"
+              color="secondary"
+              size='small'
+              onClick={handleAddBlog}
+              sx={{ mr: 2 }}
+              startIcon={<Plus/>}
+            >
+              blog
+            </Button>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
               onClick={handleClickMenu}
               aria-controls={openMenu ? 'menu-options' : undefined}
               aria-haspopup="true"
@@ -150,7 +172,7 @@ export const Navbar = () => {
             >
               <MenuItem onClick={handleCloseMenu} sx={{ color: lightBlue[800] }}>
                 <ListItemIcon sx={{ color: lightBlue[800] }}>
-                  <ArrowRight size={20}/>
+                  <ArrowRight size={20} />
                 </ListItemIcon>
                 Home
               </MenuItem>
@@ -160,7 +182,7 @@ export const Navbar = () => {
                 </ListItemIcon>
                 Galeria
               </MenuItem>
-              <Divider/>
+              <Divider />
               <MenuItem onClick={handleCloseMenu}>
                 <ListItemIcon>
                   <Mail size={20} />
@@ -169,10 +191,10 @@ export const Navbar = () => {
               </MenuItem>
               <a href="https://diegocardoso.vercel.app/" target='_blank'>
                 <MenuItem onClick={handleCloseMenu}>
-                    <ListItemIcon>
-                      <BriefcaseBusiness size={20} />
-                    </ListItemIcon>
-                    Portfólio
+                  <ListItemIcon>
+                    <BriefcaseBusiness size={20} />
+                  </ListItemIcon>
+                  Portfólio
                 </MenuItem>
               </a>
             </Menu>
@@ -181,4 +203,4 @@ export const Navbar = () => {
       </AppBar>
     </>
   );
-}
+};
