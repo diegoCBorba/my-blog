@@ -5,6 +5,7 @@ import { TagModule } from './modules/tag/tag.module';
 import { CommentModule } from './modules/comment/comment.module';
 import { BlogModule } from './modules/blog/blog.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { PrismaModule } from './prisma/prisma.module';
     CommentModule,
     TagModule,
     PrismaModule,
+    AuthModule,
   ],
   controllers: [],
 })

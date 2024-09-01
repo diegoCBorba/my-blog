@@ -4,11 +4,13 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
-import { ArrowRight, BriefcaseBusiness, LogOut, Mail, Menu as MenuLucide, Plus, Settings } from 'lucide-react';
+import { ArrowRight, BriefcaseBusiness, LogIn, LogOut, Mail, Menu as MenuLucide, Plus, Settings } from 'lucide-react';
 import { Avatar, Divider, ListItemIcon, Menu, MenuItem, Tooltip, Typography } from '@mui/material';
 import { MouseEvent, useState } from 'react';
 import { lightBlue } from '@mui/material/colors';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
+import Link from 'next/link'; // Importando o Link do Next.js
 
 export const Navbar = () => {
   const [anchorElAvatar, setAnchorElAvatar] = useState<HTMLElement | null>(null);
@@ -16,6 +18,8 @@ export const Navbar = () => {
 
   const [anchorElMenu, setAnchorElMenu] = useState<HTMLElement | null>(null);
   const openMenu = Boolean(anchorElMenu);
+
+  const { isAdmin, isLogged, username } = useAuth()
 
   const handleClickAvatar = (event: MouseEvent<HTMLElement>) => {
     setAnchorElAvatar(event.currentTarget);
@@ -105,28 +109,43 @@ export const Navbar = () => {
               anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
             >
               <MenuItem onClick={handleCloseAvatar}>
-                <Avatar /> Profile
+                <Avatar /> { isLogged ? username : "Profile" }
               </MenuItem>
               <Divider />
-              <MenuItem onClick={handleCloseAvatar}>
-                <ListItemIcon>
-                  <LogOut size={20} />
-                </ListItemIcon>
-                Logout
-              </MenuItem>
+              {
+                !isLogged ? (
+                  <MenuItem onClick={handleCloseAvatar} component={Link} href="/auth/login">
+                    <ListItemIcon>
+                      <LogIn size={20} />
+                    </ListItemIcon>
+                    Login
+                  </MenuItem>
+                ) : (
+                  <MenuItem onClick={handleCloseAvatar}>
+                    <ListItemIcon>
+                      <LogOut size={20} />
+                    </ListItemIcon>
+                    Logout
+                  </MenuItem>
+                )
+              }
             </Menu>
           </div>
           <div>
-            <Button
-              variant="contained"
-              color="secondary"
-              size='small'
-              onClick={handleAddBlog}
-              sx={{ mr: 2 }}
-              startIcon={<Plus/>}
-            >
-              blog
-            </Button>
+            {
+              isAdmin && (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size='small'
+                  onClick={handleAddBlog}
+                  sx={{ mr: 2 }}
+                  startIcon={<Plus/>}
+                >
+                  Blog
+                </Button>
+              )
+            }
             <IconButton
               edge="start"
               color="inherit"
@@ -170,33 +189,31 @@ export const Navbar = () => {
               transformOrigin={{ horizontal: 'right', vertical: 'top' }}
               anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-              <MenuItem onClick={handleCloseMenu} sx={{ color: lightBlue[800] }}>
+              <MenuItem onClick={handleCloseMenu} component={Link} href="/" sx={{ color: lightBlue[800] }}>
                 <ListItemIcon sx={{ color: lightBlue[800] }}>
                   <ArrowRight size={20} />
                 </ListItemIcon>
                 Home
               </MenuItem>
-              <MenuItem onClick={handleCloseMenu} sx={{ color: lightBlue[800] }}>
+              <MenuItem onClick={handleCloseMenu} component={Link} href="/galeria" sx={{ color: lightBlue[800] }}>
                 <ListItemIcon sx={{ color: lightBlue[800] }}>
                   <ArrowRight size={20} />
                 </ListItemIcon>
                 Galeria
               </MenuItem>
               <Divider />
-              <MenuItem onClick={handleCloseMenu}>
+              <MenuItem onClick={handleCloseMenu} component="a" href="#contato">
                 <ListItemIcon>
                   <Mail size={20} />
                 </ListItemIcon>
                 Contato
               </MenuItem>
-              <a href="https://diegocardoso.vercel.app/" target='_blank'>
-                <MenuItem onClick={handleCloseMenu}>
-                  <ListItemIcon>
-                    <BriefcaseBusiness size={20} />
-                  </ListItemIcon>
-                  Portfólio
-                </MenuItem>
-              </a>
+              <MenuItem onClick={handleCloseMenu} component="a" href="https://diegocardoso.vercel.app/" target="_blank">
+                <ListItemIcon>
+                  <BriefcaseBusiness size={20} />
+                </ListItemIcon>
+                Portfólio
+              </MenuItem>
             </Menu>
           </div>
         </Box>

@@ -81,7 +81,7 @@ const Blogs = ({ params }: Props) => {
       >
         {blog.content}
       </ReactMarkdown>
-      <CommentList idBlog={blog.id}/>
+      <CommentList blogId={blog.id}/>
     </Box>
   );
 };

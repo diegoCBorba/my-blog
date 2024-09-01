@@ -22,7 +22,7 @@ interface FormValues {
 }
 
 const BlogForm = () => {
-  const { control, handleSubmit, setValue, watch, formState: { errors } } = useForm<FormValues>({
+  const { control, handleSubmit, setValue, watch, reset, formState: { errors } } = useForm<FormValues>({
     defaultValues: {
       tagId: 1,
     },
@@ -64,7 +64,11 @@ const BlogForm = () => {
       authorId: 1, // Substitua por um ID real se necessário
     };
 
-    createBlogPost(formDataWithSlug);
+    createBlogPost(formDataWithSlug, {
+      onSuccess: () => {
+        reset();
+      }
+    });
   };
 
   return (

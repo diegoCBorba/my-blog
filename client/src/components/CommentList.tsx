@@ -5,25 +5,26 @@ import { useMutateComment } from '@/hooks/comment/useMutateComment';
 import { useCommentsByBlogId } from '@/hooks/comment/useCommentsByBlogId';
 import { CreateCommentPayload } from '@/interfaces/comment';
 import Link from 'next/link';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface PropsComment {
-  idBlog: number;
+  blogId: number;
 }
 
-const CommentList = ({ idBlog }: PropsComment) => {
+const CommentList = ({ blogId }: PropsComment) => {
   const { control, handleSubmit, reset } = useForm<CreateCommentPayload>();
   const [isFocused, setIsFocused] = useState(false);
   const { mutate, isPending } = useMutateComment();
-  const { data: comments, isLoading, error } = useCommentsByBlogId(idBlog);
+  const { data: comments, isLoading, error } = useCommentsByBlogId(blogId);
+
+  const { id: userId } = useAuth()
 
   const onSubmit = (data: Omit<CreateCommentPayload, 'blogId' | 'userId'>) => {
-    const userId = 1; // Substitua pelo ID real do usuário, possivelmente de um contexto ou hook de autenticação
-
     // Prepare os dados para enviar
     const payload: CreateCommentPayload = {
       ...data,
-      blogId: idBlog,
-      userId: userId,
+      blogId,
+      userId
     };
 
     // Envia o novo comentário utilizando o hook
