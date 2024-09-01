@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { useProfile } from '@/hooks/auth/useProfile';
 
 interface AuthContextProps {
   isAdmin: boolean;
@@ -18,12 +19,24 @@ interface AuthInfo {
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const { data: profile, isLoading, error } = useProfile();
+
   const [authInfo, setAuthInfo] = useState<AuthInfo>({
     isAdmin: false,
     isLogged: false,
     username: '',
     id: 0,
   });
+  useEffect(() => {
+    if (profile && !isLoading && !error) {
+      setAuthInfo({
+        isAdmin: profile.isAdmin,
+        isLogged: true,
+        username: profile.username,
+        id: profile.userId,
+      });
+    }
+  }, [profile, isLoading, error]);
 
   return (
     <AuthContext.Provider value={{ ...authInfo, setAuthInfo }}>

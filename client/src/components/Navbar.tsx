@@ -4,13 +4,14 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
-import { ArrowRight, BriefcaseBusiness, LogIn, LogOut, Mail, Menu as MenuLucide, Plus, Settings } from 'lucide-react';
-import { Avatar, Divider, ListItemIcon, Menu, MenuItem, Tooltip, Typography } from '@mui/material';
+import { ArrowRight, BriefcaseBusiness, LogIn, LogOut, Mail, Menu as MenuLucide, Plus } from 'lucide-react';
+import { Avatar, Divider, ListItemIcon, Menu, MenuItem, Tooltip } from '@mui/material';
 import { MouseEvent, useState } from 'react';
 import { lightBlue } from '@mui/material/colors';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import Link from 'next/link'; // Importando o Link do Next.js
+import Link from 'next/link';
+import useLogout from '@/hooks/auth/useLogout';
 
 export const Navbar = () => {
   const [anchorElAvatar, setAnchorElAvatar] = useState<HTMLElement | null>(null);
@@ -20,6 +21,13 @@ export const Navbar = () => {
   const openMenu = Boolean(anchorElMenu);
 
   const { isAdmin, isLogged, username } = useAuth()
+  const logout = useLogout();
+
+  const handleLogout = () => {
+    logout();
+    setAnchorElAvatar(null);
+    router.push("/")
+  };
 
   const handleClickAvatar = (event: MouseEvent<HTMLElement>) => {
     setAnchorElAvatar(event.currentTarget);
@@ -121,7 +129,7 @@ export const Navbar = () => {
                     Login
                   </MenuItem>
                 ) : (
-                  <MenuItem onClick={handleCloseAvatar}>
+                  <MenuItem onClick={handleLogout}>
                     <ListItemIcon>
                       <LogOut size={20} />
                     </ListItemIcon>

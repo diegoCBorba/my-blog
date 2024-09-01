@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Card, CardContent, Typography, Avatar, Grid, TextField, Button, Box, CircularProgress, Skeleton, Stack } from '@mui/material';
+import { Card, CardContent, Typography, Avatar, Grid, TextField, Button, Box, CircularProgress, Skeleton, Stack, Snackbar, Alert } from '@mui/material';
 import { useMutateComment } from '@/hooks/comment/useMutateComment';
 import { useCommentsByBlogId } from '@/hooks/comment/useCommentsByBlogId';
 import { CreateCommentPayload } from '@/interfaces/comment';
@@ -14,24 +14,33 @@ interface PropsComment {
 const CommentList = ({ blogId }: PropsComment) => {
   const { control, handleSubmit, reset } = useForm<CreateCommentPayload>();
   const [isFocused, setIsFocused] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const { mutate, isPending } = useMutateComment();
   const { data: comments, isLoading, error } = useCommentsByBlogId(blogId);
 
-  const { id: userId } = useAuth()
+  const { id: userId, isLogged } = useAuth();
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
 
   const onSubmit = (data: Omit<CreateCommentPayload, 'blogId' | 'userId'>) => {
-    // Prepare os dados para enviar
+    if (!isLogged) {
+      setOpenSnackbar(true);
+      setIsFocused(false);
+      return;
+    }
+
     const payload: CreateCommentPayload = {
       ...data,
       blogId,
       userId
     };
 
-    // Envia o novo comentário utilizando o hook
     mutate(payload, {
       onSuccess: () => {
-        reset(); // Reseta o formulário após o sucesso
-        setIsFocused(false)
+        reset();
+        setIsFocused(false);
       },
     });
   };
@@ -124,6 +133,19 @@ const CommentList = ({ blogId }: PropsComment) => {
         </Stack>
         )
       }
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={4000}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          severity="warning"
+          sx={{ width: '100%' }}
+        >
+          Você precisa estar logado para comentar!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
