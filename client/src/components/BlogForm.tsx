@@ -58,15 +58,13 @@ const BlogForm = () => {
   };
 
   const { data: isSlugUnique, isLoading: isSlugChecking } = useSlugUnique(slug);
-
-  useEffect(() => {
-    if (slug && !isSlugChecking) {
-      setSlugError(isSlugUnique ? null : 'Este slug já está em uso.');
-    }
-  }, [isSlugUnique, isSlugChecking, slug]);
-
+  
   const onSubmit = async (data: FormValues) => {
-    if (slugError) return;
+
+    if(!isSlugUnique?.isUnique){
+      setSlugError("Altera o título. Slug em uso.")
+      return
+    }
 
     const formDataWithSlug: CreateBlogPostPayload = {
       ...data,
@@ -77,6 +75,7 @@ const BlogForm = () => {
 
     createBlogPost(formDataWithSlug, {
       onSuccess: () => {
+        setSlugError(null);
         reset();
       }
     });
@@ -228,8 +227,8 @@ const BlogForm = () => {
             </Typography>
           )}
 
-          <Button type="submit" variant="contained" disabled={isCreating || slugError !== null}>
-            {isCreating ? 'Criando...' : 'Criar Blog'}
+          <Button type="submit" variant="contained" disabled={ isSlugChecking || isCreating }>
+            {(isSlugChecking || isCreating) ? 'Criando...' : 'Criar Blog'}
           </Button>
         </Stack>
       </form>
