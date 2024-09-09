@@ -29,3 +29,16 @@ export interface CreateBlogPostPayload {
   tagId: number;
   authorId: number;
 }
+
+interface BlogAll {
+  slug: string;
+  cover?: string;
+  title: string;
+  description: string;
+  tag: string;
+}
+
+export interface BlogsResponse {
+  data: BlogAll[];
+  totalPages: number;
+}

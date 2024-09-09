@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { TextField, Button, Typography, Stack, Box, Select, MenuItem, FormControl, InputLabel, CircularProgress } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
@@ -12,6 +12,7 @@ import { useTags } from '@/hooks/tag/useTags';
 import { useSlugUnique } from '@/hooks/blog/useSlugUnique';
 import { CreateBlogPostPayload } from '@/interfaces/blog';
 import { useMutateBlogPost } from '@/hooks/blog/useMutateBlog';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface FormValues {
   title: string;
@@ -28,11 +29,13 @@ const BlogForm = () => {
     },
   });
   const coverImage = watch('coverImage');
+  const [slug, setSlug] = useState("");
   const [slugError, setSlugError] = useState<string | null>(null);
+  const { id: authorId } = useAuth()
 
   const { data: tags, isLoading: isTagsLoading } = useTags();
   const { mutate: createBlogPost, isPending: isCreating, error: createError } = useMutateBlogPost();
-
+  
   const onDrop = (acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
       setValue('coverImage', acceptedFiles[0]);
@@ -54,14 +57,22 @@ const BlogForm = () => {
       .replace(/\s+/g, '-');
   };
 
+  const { data: isSlugUnique, isLoading: isSlugChecking } = useSlugUnique(slug);
+
+  useEffect(() => {
+    if (slug && !isSlugChecking) {
+      setSlugError(isSlugUnique ? null : 'Este slug já está em uso.');
+    }
+  }, [isSlugUnique, isSlugChecking, slug]);
+
   const onSubmit = async (data: FormValues) => {
-    const newSlug = generateSlug(data.title);
+    if (slugError) return;
 
     const formDataWithSlug: CreateBlogPostPayload = {
       ...data,
       cover: data.coverImage ? URL.createObjectURL(data.coverImage) : '',
-      slug: newSlug,
-      authorId: 1, // Substitua por um ID real se necessário
+      slug,
+      authorId,
     };
 
     createBlogPost(formDataWithSlug, {
@@ -110,6 +121,11 @@ const BlogForm = () => {
                     variant="outlined"
                     {...field}
                     fullWidth
+                    onChange={(e) => {
+                      field.onChange(e);
+                      const generatedSlug = generateSlug(e.target.value);
+                      setSlug(generatedSlug);
+                    }}
                     error={!!errors.title || !!slugError}
                     helperText={errors.title?.message || slugError}
                   />
@@ -171,7 +187,7 @@ const BlogForm = () => {
             />
           </Box>
 
-          <div style={{ marginBottom: "-3.5rem" }}/>
+          <div style={{ marginBottom: "-3.5rem" }} />
 
           <Controller
             name="content"
@@ -205,7 +221,7 @@ const BlogForm = () => {
             </Typography>
           )}
 
-          <Button type="submit" variant="contained" disabled={isCreating}>
+          <Button type="submit" variant="contained" disabled={isCreating || slugError !== null}>
             {isCreating ? 'Criando...' : 'Criar Blog'}
           </Button>
         </Stack>

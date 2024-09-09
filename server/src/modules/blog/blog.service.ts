@@ -9,35 +9,60 @@ export class BlogService {
   async findAll(
     page: number = 1,
     limit: number = 9,
-    tag?: string,
+    tagId?: number,
     search?: string,
   ) {
-    // Ajustar valores padrão
     const pageNumber = page < 1 ? 1 : page;
     const pageSize = limit < 1 ? 9 : limit;
 
-    // Construir o filtro
     const whereClause = {
-      ...(tag && { tag: { name: tag } }),
-      ...(search && { title: { contains: search, mode: 'insensitive' } }),
+      ...(tagId ? { tagId } : {}),
+      ...(search ? { title: { contains: search, mode: 'insensitive' } } : {}),
     };
 
-    // Obter a contagem total de blogs que correspondem ao filtro
-    const totalCount = await this.prisma.blog.count({
-      where: whereClause,
-    });
-
-    // Obter os blogs com base na paginação e filtro
     const blogs = await this.prisma.blog.findMany({
-      where: whereClause,
+      where: {
+        ...whereClause,
+        ...(search && { title: { contains: search.toLowerCase() } }),
+      },
       skip: (pageNumber - 1) * pageSize,
       take: pageSize,
       include: {
-        tag: true, // Incluir a tag relacionada
+        tag: true,
+      },
+      orderBy: {
+        publishedDate: 'desc',
       },
     });
 
-    // Formatar a resposta
+    const totalCount = await this.prisma.blog.count({
+      where: {
+        ...whereClause,
+        ...(search && { title: { contains: search.toLowerCase() } }),
+      },
+    });
+
+    // const whereClause = {
+    //   ...(tagId ? { tagId } : {}),
+    //   ...(search ? { title: { contains: search, mode: 'insensitive' } } : {}),
+    // };
+
+    // const totalCount = await this.prisma.blog.count({
+    //   where: whereClause,
+    // });
+
+    // const blogs = await this.prisma.blog.findMany({
+    //   where: whereClause,
+    //   skip: (pageNumber - 1) * pageSize,
+    //   take: pageSize,
+    //   include: {
+    //     tag: true,
+    //   },
+    //   orderBy: {
+    //     publishedDate: 'desc',
+    //   },
+    // });
+
     const data = blogs.map((blog) => ({
       slug: `${blog.tag.slug}/${blog.slug}`,
       cover: blog.cover,

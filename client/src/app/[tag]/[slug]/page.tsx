@@ -43,6 +43,7 @@ const Blogs = ({ params }: Props) => {
   const { slug } = params;
   const { data: blog, isLoading, error } = useBlogBySlug(slug);
 
+
   if (isLoading) {
     return <Typography variant="h6">Carregando...</Typography>;
   }

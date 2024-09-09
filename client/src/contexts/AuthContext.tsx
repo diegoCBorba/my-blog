@@ -27,8 +27,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     username: '',
     id: 0,
   });
+
   useEffect(() => {
-    if (profile && !isLoading && !error) {
+    if (error) {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('access_token');
+      }
+    } else if (profile && !isLoading) {
       setAuthInfo({
         isAdmin: profile.isAdmin,
         isLogged: true,

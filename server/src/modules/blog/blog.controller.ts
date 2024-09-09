@@ -8,15 +8,17 @@ export class BlogController {
 
   @Get()
   async findAll(
-    @Query('page') page: string = '1',
-    @Query('limit') limit: string = '9',
-    @Query('tag') tag?: string,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 9,
+    @Query('tagId') tagId?: number,
     @Query('search') search?: string,
   ) {
-    const pageNumber = parseInt(page, 10);
-    const pageSize = parseInt(limit, 10);
-
-    return this.blogService.findAll(pageNumber, pageSize, tag, search);
+    return this.blogService.findAll(
+      Number(page),
+      Number(limit),
+      Number(tagId),
+      search,
+    );
   }
 
   @Get('grouped-by-tag')
