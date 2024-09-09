@@ -31,7 +31,9 @@ const Home = () => {
           Bem-vindo ao meu blog! Eu sou o Diego e aqui documentarei minhas últimas explorações.
         </Typography>
         <Box mt={4}>
-          <Button variant="outlined" sx={{ mr: 2 }}>Sobre mim</Button>
+          <Link href="https://diegocardoso.vercel.app/" target='_blank' passHref>
+            <Button variant="outlined" sx={{ mr: 2 }}>Sobre mim</Button>
+          </Link>
           <Link href="/galeria" passHref>
             <Button variant="outlined">Galeria</Button>
           </Link>

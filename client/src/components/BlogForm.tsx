@@ -108,7 +108,14 @@ const BlogForm = () => {
             )}
           </Box>
 
-          <Box sx={{ display: "flex", gap: "2rem", "& > div": { flex: 1 } }}>
+          <Box 
+            sx={{ 
+              display: "flex", 
+              flexDirection: { xs: "column", md: "row" },
+              gap: { xs: 2, md: "2rem" }, 
+              "& > div": { flex: 1, width: "100%" }
+              }}
+          >
             <Stack spacing={2}>
               <Controller
                 name="title"

@@ -98,7 +98,7 @@ const LoginPage = () => {
           <Box sx={{ mt: 2, textAlign: 'center' }}>
             <Typography variant="body2">
               Não tem uma conta?{' '}
-              <Link href="/cadastro" variant="body2" color="primary">
+              <Link href="/auth/cadastro" variant="body2" color="primary">
                 Cadastre-se
               </Link>
             </Typography>
