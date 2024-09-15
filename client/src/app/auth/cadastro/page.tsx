@@ -4,8 +4,9 @@ import { Container, TextField, Button, Typography, Box } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRegister} from '@/hooks/auth/useRegister';
+import { useRouter } from 'next/navigation';
 
-// Definindo o esquema de validação com Zod
 const signupSchema = z.object({
   name: z.string().nonempty('Nome é obrigatório'),
   username: z.string().min(3, 'Nome de usuário deve ter pelo menos 3 caracteres').nonempty('Nome de usuário é obrigatório'),
@@ -24,9 +25,16 @@ const SignupPage = () => {
     resolver: zodResolver(signupSchema),
   });
 
+  const router = useRouter();
+  const { mutate, isPending, isError, error } = useRegister();
+
   const onSubmit = (data: SignupFormInputs) => {
-    // Aqui você pode adicionar a lógica para criar uma nova conta
-    console.log('Dados do cadastro:', data);
+    const { confirmPassword, ...registerData } = data;
+    mutate(registerData, {
+      onSuccess: () => {
+        router.push('/auth/login');
+      },
+    });
   };
 
   return (
@@ -113,14 +121,22 @@ const SignupPage = () => {
             error={!!errors.confirmPassword}
             helperText={errors.confirmPassword?.message}
           />
+
+          {isError && (
+            <Typography color="error">
+              {error instanceof Error ? error.message : 'Erro ao registrar'}
+            </Typography>
+          )}
+
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
             sx={{ mt: 3, mb: 2 }}
+            disabled={isPending}
           >
-            Cadastre-se
+            {isPending ? 'Cadastrando...' : 'Cadastre-se'}
           </Button>
         </Box>
       </Box>
