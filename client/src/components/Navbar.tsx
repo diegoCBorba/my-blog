@@ -20,7 +20,7 @@ export const Navbar = () => {
   const [anchorElMenu, setAnchorElMenu] = useState<HTMLElement | null>(null);
   const openMenu = Boolean(anchorElMenu);
 
-  const { isAdmin, isLogged, username } = useAuth()
+  const { isAdmin, isLogged, username, id } = useAuth()
   const logout = useLogout();
 
   const handleLogout = () => {
@@ -116,8 +116,8 @@ export const Navbar = () => {
               transformOrigin={{ horizontal: 'left', vertical: 'top' }}
               anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
             >
-              <MenuItem onClick={handleCloseAvatar}>
-                <Avatar /> { isLogged ? username : "Profile" }
+              <MenuItem onClick={handleCloseAvatar} component={Link} href={isLogged? `/user/${id}` : `/auth/login`}>
+                <Avatar /> {isLogged ? username : "Profile"}
               </MenuItem>
               <Divider />
               {

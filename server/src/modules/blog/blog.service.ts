@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class BlogService {
@@ -15,16 +16,13 @@ export class BlogService {
     const pageNumber = page < 1 ? 1 : page;
     const pageSize = limit < 1 ? 9 : limit;
 
-    const whereClause = {
+    const whereClause: Prisma.BlogWhereInput = {
       ...(tagId ? { tagId } : {}),
       ...(search ? { title: { contains: search, mode: 'insensitive' } } : {}),
     };
 
     const blogs = await this.prisma.blog.findMany({
-      where: {
-        ...whereClause,
-        ...(search && { title: { contains: search.toLowerCase() } }),
-      },
+      where: whereClause,
       skip: (pageNumber - 1) * pageSize,
       take: pageSize,
       include: {
@@ -36,32 +34,8 @@ export class BlogService {
     });
 
     const totalCount = await this.prisma.blog.count({
-      where: {
-        ...whereClause,
-        ...(search && { title: { contains: search.toLowerCase() } }),
-      },
+      where: whereClause,
     });
-
-    // const whereClause = {
-    //   ...(tagId ? { tagId } : {}),
-    //   ...(search ? { title: { contains: search, mode: 'insensitive' } } : {}),
-    // };
-
-    // const totalCount = await this.prisma.blog.count({
-    //   where: whereClause,
-    // });
-
-    // const blogs = await this.prisma.blog.findMany({
-    //   where: whereClause,
-    //   skip: (pageNumber - 1) * pageSize,
-    //   take: pageSize,
-    //   include: {
-    //     tag: true,
-    //   },
-    //   orderBy: {
-    //     publishedDate: 'desc',
-    //   },
-    // });
 
     const data = blogs.map((blog) => ({
       slug: `${blog.tag.slug}/${blog.slug}`,
