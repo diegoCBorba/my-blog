@@ -5,10 +5,6 @@ export class CreateBlogDto {
   @IsString()
   title: string;
 
-  @IsOptional()
-  @IsString()
-  cover?: string;
-
   @IsNotEmpty()
   @IsString()
   content: string;

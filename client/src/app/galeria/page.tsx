@@ -82,7 +82,7 @@ const Gallery = () => {
                     <CardMedia
                       component="img"
                       height="140"
-                      image={post.cover || 'https://via.placeholder.com/300x140?text=No+Image'}
+                      image={post.cover ? `http://localhost:3001${post.cover}` : 'https://via.placeholder.com/300x140?text=No+Image'}
                       alt={post.title}
                     />
                     <CardContent>
@@ -113,7 +113,7 @@ const Gallery = () => {
               ))}
             </Grid>
       
-            {blogsResponse && blogsResponse?.data.length >= visiblePosts && (
+            {blogsResponse && blogsResponse?.data.length > visiblePosts && (
               <Box mt={4} display="flex" justifyContent="center">
                 <Button variant="contained" onClick={handleSeeMore}>Veja mais</Button>
               </Box>

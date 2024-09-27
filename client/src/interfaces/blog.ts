@@ -22,7 +22,7 @@ export interface BlogPostResponse {
 
 export interface CreateBlogPostPayload {
   title: string;
-  cover?: string;
+  cover?: File;
   content: string;
   description: string;
   slug: string;

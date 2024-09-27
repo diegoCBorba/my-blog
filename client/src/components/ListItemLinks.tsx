@@ -1,11 +1,11 @@
-import { PropsGroupedBlogs } from "@/interfaces/blog";
+import { GroupedBlogsResponse } from "@/interfaces/blog";
 import { Box, Collapse, List, ListItemButton, ListItemText } from "@mui/material"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import Link from "next/link";
 import { useState } from "react";
 
 interface PropsList{
-  dataLink: PropsGroupedBlogs
+  dataLink: GroupedBlogsResponse
 }
 
 export const ListItemLinks = ({ dataLink }: PropsList) => {

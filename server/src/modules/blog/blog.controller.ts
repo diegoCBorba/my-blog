@@ -1,6 +1,9 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 
 @Controller('blog')
 export class BlogController {
@@ -37,7 +40,21 @@ export class BlogController {
   }
 
   @Post()
-  async create(@Body() createBlogDto: CreateBlogDto) {
-    return this.blogService.create(createBlogDto);
+  @UseInterceptors(FileInterceptor('cover', {
+    storage: diskStorage({
+      destination: './public/images',
+      filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        const ext = extname(file.originalname);
+        cb(null, `${uniqueSuffix}${ext}`);
+      },
+    }),
+  }))
+  async create(
+    @Body() createBlogDto: CreateBlogDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const coverPath = file ? `/images/${file.filename}` : undefined;
+    return this.blogService.create(createBlogDto, coverPath);
   }
 }

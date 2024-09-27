@@ -54,7 +54,7 @@ const Home = () => {
                   <CardMedia
                     component="img"
                     height="140"
-                    image={post.cover || 'https://via.placeholder.com/300x140?text=No+Image'}
+                    image={post.cover ? `http://localhost:3001${post.cover}` : 'https://via.placeholder.com/300x140?text=No+Image'}
                     alt={post.title}
                   />
                   <CardContent>
@@ -101,7 +101,7 @@ const Home = () => {
                   <CardMedia
                     component="img"
                     height="140"
-                    image={post.cover || 'https://via.placeholder.com/300x140?text=No+Image'}
+                    image={post.cover ? `http://localhost:3001${post.cover}` : 'https://via.placeholder.com/300x140?text=No+Image'}
                     alt={post.title}
                   />
                   <CardContent>

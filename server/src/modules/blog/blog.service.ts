@@ -114,16 +114,18 @@ export class BlogService {
     return result;
   }
 
-  async create(createBlogDto: CreateBlogDto) {
+  async create(createBlogDto: CreateBlogDto, coverPath: string | null) {
+    const { title, content, description, slug, tagId, authorId } = createBlogDto;
+
     return this.prisma.blog.create({
       data: {
-        title: createBlogDto.title,
-        cover: createBlogDto.cover,
-        content: createBlogDto.content,
-        description: createBlogDto.description,
-        slug: createBlogDto.slug,
-        tag: { connect: { id: createBlogDto.tagId } },
-        author: { connect: { id: createBlogDto.authorId } },
+        title,
+        content,
+        description,
+        slug,
+        tagId: Number(tagId),
+        authorId: Number(tagId),
+        cover: coverPath,
       },
     });
   }

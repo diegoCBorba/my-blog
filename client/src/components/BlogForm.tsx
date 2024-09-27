@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { TextField, Button, Typography, Stack, Box, Select, MenuItem, FormControl, InputLabel, CircularProgress } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
@@ -18,7 +18,7 @@ interface FormValues {
   title: string;
   description: string;
   content: string;
-  coverImage: File | null;
+  coverImage: File | undefined;
   tagId: number;
 }
 
@@ -26,6 +26,7 @@ const BlogForm = () => {
   const { control, handleSubmit, setValue, watch, reset, formState: { errors } } = useForm<FormValues>({
     defaultValues: {
       tagId: 1,
+      coverImage: undefined,
     },
   });
   const coverImage = watch('coverImage');
@@ -63,13 +64,16 @@ const BlogForm = () => {
 
     if(!isSlugUnique?.isUnique){
       setSlugError("Altera o título. Slug em uso.")
-      return
+      return;
     }
 
     const formDataWithSlug: CreateBlogPostPayload = {
-      ...data,
-      cover: data.coverImage ? URL.createObjectURL(data.coverImage) : '',
+      title: data.title,
+      cover: data.coverImage, // Agora é o arquivo de imagem
+      content: data.content,
+      description: data.description,
       slug,
+      tagId: data.tagId,
       authorId,
     };
 
@@ -227,7 +231,7 @@ const BlogForm = () => {
             </Typography>
           )}
 
-          <Button type="submit" variant="contained" disabled={ isSlugChecking || isCreating }>
+          <Button type="submit" variant="contained" disabled={isSlugChecking || isCreating}>
             {(isSlugChecking || isCreating) ? 'Criando...' : 'Criar Blog'}
           </Button>
         </Stack>

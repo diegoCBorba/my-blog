@@ -63,7 +63,7 @@ const Blogs = ({ params }: Props) => {
         {blog.cover && (
           <Box sx={{ my: '2rem' }}>
             <Image 
-              src={blog.cover} 
+              src={`http://localhost:3001${blog.cover}`} 
               alt={blog.title} 
               layout="responsive" 
               width={1200} 
