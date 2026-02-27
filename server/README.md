@@ -27,10 +27,6 @@ Este é o back-end do projeto de blog, construído com Nest.js.
 - [TypeScript](https://www.typescriptlang.org/)
 - [Jest](https://jestjs.io/)
 
-Aqui está uma introdução ao banco de dados que você pode adicionar ao final do README do seu blog:
-
-Claro! Aqui está uma introdução ao banco de dados adaptada para PostgreSQL, com a descrição das tabelas:
-
 ---
 
 ## Banco de Dados
